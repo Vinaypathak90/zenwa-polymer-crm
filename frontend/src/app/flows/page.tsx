@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import axios from 'axios';
+import api from '@/services/api';
 import { 
     Search, Workflow, Plus, CheckCircle2, RefreshCw, Smartphone, 
     Check, X, FileText, Send, Eye, ShieldCheck, ChevronRight, 
@@ -33,7 +33,7 @@ export default function FlowsPage() {
     const fetchFlows = async () => {
         try {
             setIsRefreshing(true);
-            const res = await axios.get('http://localhost:5000/api/flows');
+            const res = await api.get('/api/flows');
             setData(res.data);
         } catch (error) {
             console.error("Error fetching flows:", error);
@@ -56,7 +56,7 @@ export default function FlowsPage() {
     // Toggle flow status (Published / Draft)
     const handleToggleFlow = async (id: string) => {
         try {
-            const res = await axios.patch(`http://localhost:5000/api/flows/${id}/toggle`);
+            const res = await api.patch(`/api/flows/${id}/toggle`);
             if (res.data.success) {
                 showToast(res.data.message);
                 fetchFlows();
@@ -84,7 +84,7 @@ export default function FlowsPage() {
                 }
             };
 
-            const res = await axios.post(`http://localhost:5000/api/flows/${testFlow._id}/submit`, payload);
+            const res = await api.post(`/api/flows/${testFlow._id}/submit`, payload);
             if (res.data.success) {
                 showToast(`✓ Quote request for ${testTonnage} MT submitted via WhatsApp Flow!`);
                 setTestFlow(null);
@@ -107,7 +107,7 @@ export default function FlowsPage() {
 
         try {
             setIsSubmittingCreate(true);
-            const res = await axios.post('http://localhost:5000/api/flows', {
+            const res = await api.post('/api/flows', {
                 name: newFlowName.trim(),
                 category: newFlowCategory,
                 description: newFlowDesc.trim()

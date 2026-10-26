@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from 'react';
-import axios from 'axios';
+import api from '@/services/api';
 import Sidebar from '@/components/Sidebar';
 import DashboardContent from '@/components/dashboard/DashboardContent';
 
@@ -13,7 +13,7 @@ export default function DashboardPage() {
     const fetchDashboardData = useCallback(async (params?: { search?: string; startDate?: string; endDate?: string; stage?: string }) => {
         try {
             setIsRefreshing(true);
-            const res = await axios.get('http://localhost:5000/api/dashboard', {
+            const res = await api.get('/api/dashboard', {
                 params: params || {}
             });
             setData(res.data);

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import axios from 'axios';
+import api from '@/services/api';
 import { 
     Search, Calendar, RefreshCw, Plus, CheckCircle2, Megaphone, 
     Send, Users, DollarSign, TrendingUp, Check, X, Eye, 
@@ -32,7 +32,7 @@ export default function BroadcastsPage() {
     const fetchBroadcasts = async () => {
         try {
             setIsRefreshing(true);
-            const res = await axios.get('http://localhost:5000/api/broadcasts', {
+            const res = await api.get('/api/broadcasts', {
                 params: {
                     search: searchTerm,
                     segment: selectedSegment !== 'All' ? selectedSegment : undefined
@@ -84,7 +84,7 @@ export default function BroadcastsPage() {
                 totalCost: effectiveTotalCost
             };
 
-            const res = await axios.post('http://localhost:5000/api/broadcasts/launch', payload);
+            const res = await api.post('/api/broadcasts/launch', payload);
             if (res.data.success) {
                 showToast(`🚀 "${campaignName}" dispatched to ${contactsCount} buyers!`);
                 setIsLaunchModalOpen(false);

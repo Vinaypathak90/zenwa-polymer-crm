@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import axios from 'axios';
+import api from '@/services/api';
 import { 
     Search, Calendar, Megaphone, ArrowRight, Download, X, 
     RefreshCw, Plus, Check, Layers, Filter, Sparkles, Building2,
@@ -230,7 +230,7 @@ export default function DashboardContent({
                 product: selectedProduct
             };
 
-            const res = await axios.post('http://localhost:5000/api/dashboard/broadcast', payload);
+            const res = await api.post('/api/dashboard/broadcast', payload);
             if (res.data.success) {
                 showToast(`🚀 Campaign "${campaignName}" launched! Cost: ₹${effectiveTotalCost.toLocaleString()}`);
                 setIsBroadcastModalOpen(false);

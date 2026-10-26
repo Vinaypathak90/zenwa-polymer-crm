@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useMemo, useRef } from 'react';
-import axios from 'axios';
+import api from '@/services/api';
 import { 
     Search, CheckCircle2, MoreVertical, Paperclip, Send, Plus, 
     Calendar, MessageSquare, Clock, Phone, Building2, Tag, 
@@ -28,7 +28,7 @@ export default function SharedInboxPage() {
     // Fetch Chats from Backend
     const fetchChats = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/inbox');
+            const res = await api.get('/api/inbox');
             setChats(res.data);
             if (res.data.length > 0 && !activeChatId) {
                 setActiveChatId(res.data[0].id);
@@ -112,7 +112,7 @@ export default function SharedInboxPage() {
         setMessageInput("");
 
         try {
-            const res = await axios.post(`http://localhost:5000/api/inbox/${activeChat.id}/message`, {
+            const res = await api.post(`/api/inbox/${activeChat.id}/message`, {
                 text: textToSend,
                 author: 'Harsh Vardhan'
             });
@@ -132,7 +132,7 @@ export default function SharedInboxPage() {
         if (!activeChat) return;
 
         try {
-            const res = await axios.post(`http://localhost:5000/api/inbox/${activeChat.id}/approve-ai`, {
+            const res = await api.post(`/api/inbox/${activeChat.id}/approve-ai`, {
                 messageId
             });
 
@@ -158,7 +158,7 @@ export default function SharedInboxPage() {
         if (!activeChat) return;
 
         try {
-            const res = await axios.post(`http://localhost:5000/api/inbox/${activeChat.id}/discard-ai`, {
+            const res = await api.post(`/api/inbox/${activeChat.id}/discard-ai`, {
                 messageId
             });
 
@@ -177,7 +177,7 @@ export default function SharedInboxPage() {
 
         const newStatus = activeChat.status === 'resolved' ? 'open' : 'resolved';
         try {
-            const res = await axios.patch(`http://localhost:5000/api/inbox/${activeChat.id}/status`, {
+            const res = await api.patch(`/api/inbox/${activeChat.id}/status`, {
                 status: newStatus
             });
 
@@ -196,7 +196,7 @@ export default function SharedInboxPage() {
 
         try {
             setIsSavingNote(true);
-            const res = await axios.patch(`http://localhost:5000/api/inbox/${activeChat.id}/notes`, {
+            const res = await api.patch(`/api/inbox/${activeChat.id}/notes`, {
                 notes: privateNote
             });
 
@@ -220,7 +220,7 @@ export default function SharedInboxPage() {
         if (!newTagInput.trim() || !activeChat) return;
 
         try {
-            const res = await axios.post(`http://localhost:5000/api/inbox/${activeChat.id}/tag`, {
+            const res = await api.post(`/api/inbox/${activeChat.id}/tag`, {
                 tag: newTagInput.trim()
             });
 

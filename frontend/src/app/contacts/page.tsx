@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import axios from 'axios';
+import api from '@/services/api';
 import Link from 'next/link';
 import { 
     Search, Users, Plus, CheckCircle2, RefreshCw, Smartphone, 
@@ -36,7 +36,7 @@ export default function ContactsPage() {
     const fetchContacts = async () => {
         try {
             setIsRefreshing(true);
-            const res = await axios.get('http://localhost:5000/api/contacts', {
+            const res = await api.get('/api/contacts', {
                 params: {
                     search: searchTerm,
                     stage: selectedStage !== 'All' ? selectedStage : undefined,
@@ -72,7 +72,7 @@ export default function ContactsPage() {
 
         try {
             setIsSubmittingContact(true);
-            const res = await axios.post('http://localhost:5000/api/contacts', {
+            const res = await api.post('/api/contacts', {
                 name: newName.trim(),
                 company: newCompany.trim() || 'Independent Manufacturer',
                 phone: newPhone.trim(),
@@ -106,7 +106,7 @@ export default function ContactsPage() {
         if (!confirm(`Are you sure you want to remove ${name} from CRM?`)) return;
 
         try {
-            const res = await axios.delete(`http://localhost:5000/api/contacts/${id}`);
+            const res = await api.delete(`/api/contacts/${id}`);
             if (res.data.success) {
                 showToast(`Contact ${name} deleted.`);
                 fetchContacts();

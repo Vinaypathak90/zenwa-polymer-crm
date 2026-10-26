@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import api from '@/services/api';
 import { 
     Bot, Sparkles, Send, CheckCircle2, RefreshCw, Smartphone, 
     Check, X, Zap, Sliders, ShieldCheck, AlertCircle, Play, 
@@ -32,7 +32,7 @@ export default function AIAgentStudioPage() {
 
     const fetchAgentConfig = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/ai-agent');
+            const res = await api.get('/api/ai-agent');
             if (res.data.success && res.data.config) {
                 setConfig(res.data.config);
                 setAgentStatus(res.data.config.status || "Active");
@@ -64,7 +64,7 @@ export default function AIAgentStudioPage() {
     const handleSaveConfig = async () => {
         try {
             setIsSaving(true);
-            const res = await axios.patch('http://localhost:5000/api/ai-agent/config', {
+            const res = await api.patch('/api/ai-agent/config', {
                 status: agentStatus,
                 systemPrompt,
                 responseLanguage: selectedLanguage
@@ -92,7 +92,7 @@ export default function AIAgentStudioPage() {
         setIsSimulating(true);
 
         try {
-            const res = await axios.post('http://localhost:5000/api/ai-agent/test', { query: userMsg });
+            const res = await api.post('/api/ai-agent/test', { query: userMsg });
             if (res.data.success) {
                 setChatLog(prev => [...prev, {
                     sender: 'ai',

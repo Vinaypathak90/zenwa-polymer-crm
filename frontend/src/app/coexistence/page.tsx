@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import axios from 'axios';
+import api from '@/services/api';
 import { 
     Search, Calendar, RefreshCw, Plus, Check, Smartphone, 
     ShieldCheck, QrCode, Wifi, Activity, ArrowRight, X, 
@@ -33,7 +33,7 @@ export default function CoexistencePage() {
     // ── Fetch Coexistence Data from Backend ──────────────────
     const fetchCoexistenceData = async (query = "") => {
         try {
-            const res = await axios.get('http://localhost:5000/api/coexistence', {
+            const res = await api.get('/api/coexistence', {
                 params: { search: query }
             });
             setData(res.data);
@@ -58,7 +58,7 @@ export default function CoexistencePage() {
     const handleRefresh = async () => {
         try {
             setIsRefreshing(true);
-            const res = await axios.post('http://localhost:5000/api/coexistence/refresh', {});
+            const res = await api.post('/api/coexistence/refresh', {});
             if (res.data.success) {
                 setData((prev: any) => ({
                     ...prev,
@@ -87,7 +87,7 @@ export default function CoexistencePage() {
 
         try {
             setIsSubmittingInvite(true);
-            const res = await axios.post('http://localhost:5000/api/coexistence/invite', {
+            const res = await api.post('/api/coexistence/invite', {
                 name: newMemberName.trim(),
                 email: newMemberEmail.trim(),
                 role: newMemberRole,
@@ -118,7 +118,7 @@ export default function CoexistencePage() {
         if (!confirm(`Are you sure you want to revoke the shared seat for ${name}?`)) return;
 
         try {
-            const res = await axios.delete(`http://localhost:5000/api/coexistence/member/${id}`);
+            const res = await api.delete(`/api/coexistence/member/${id}`);
             if (res.data.success) {
                 setData((prev: any) => ({
                     ...prev,
