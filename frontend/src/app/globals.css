@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #F6F7F4; /* Soft Neutral Background */
+  color: #0E3B26; /* Forest Text */
+}
